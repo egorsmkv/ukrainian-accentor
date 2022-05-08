@@ -13,10 +13,6 @@ notebook: https://github.com/dsakovych/g2p_uk/blob/master/notebooks/word_stress_
 pip install torch pandas
 ```
 
-## Running
-
-Use `accentor_cpu.py` or `accentor_gpu.py` script.
-
 ## Demo
 
 ```
