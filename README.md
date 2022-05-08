@@ -29,6 +29,9 @@ from accentor import Accentor, replace_accents
 
 accentor = Accentor('./accentor.pt', './dict.txt')
 
+# Using GPU
+# accentor = Accentor('./accentor.pt', './dict.txt', use_cuda=True)
+
 test_words1 = ["словотворення", "архаїчний", "програма", "а-ля-фуршет"]
 
 stressed_words = accentor.predict(test_words1, mode='stress')
