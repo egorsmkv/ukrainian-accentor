@@ -16,3 +16,11 @@ pip install torch pandas
 
 Use `accentor_cpu.py` or `accentor_gpu.py` script.
 
+## Demo
+
+```
+python accentor_cpu.py
+
+With stress: ['словотво́рення', 'архаї́чний', 'програ́ма', 'а-ля-фурше́т']
+With pluses: ['словотв+орення', 'арха+їчний', 'прогр+ама', 'а-ля-фурш+ет']
+```
