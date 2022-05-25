@@ -216,15 +216,3 @@ class Accentor:
                     continue
 
         return dictionary
-
-
-if __name__ == '__main__':
-    accentor = Accentor('./model/accentor.pt', './model/dict.txt')
-
-    test_words1 = ["словотворення", "архаїчний", "програма", "а-ля-фуршет"]
-
-    stressed_words = accentor.predict(test_words1, mode='stress')
-    plused_words = [replace_accents(x) for x in stressed_words]
-
-    print('With stress:', stressed_words)
-    print('With pluses:', plused_words)
