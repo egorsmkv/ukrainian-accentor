@@ -10,7 +10,7 @@ notebook: https://github.com/dsakovych/g2p_uk/blob/master/notebooks/word_stress_
 ## Installation
 
 ```bash
-pip install torch pandas
+pip install -r requirements.txt
 ```
 
 ## Demo
