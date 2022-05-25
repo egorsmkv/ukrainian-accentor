@@ -210,7 +210,7 @@ class Accentor:
 
 
 if __name__ == '__main__':
-    accentor = Accentor('./accentor.pt', './dict.txt')
+    accentor = Accentor('./model/accentor.pt', './model/dict.txt')
 
     test_words1 = ["словотворення", "архаїчний", "програма", "а-ля-фуршет"]
 
