@@ -148,7 +148,6 @@ class Accentor:
 
         data = data.loc[data.word_stress_pos.notna()]
 
-        self.use_cuda = use_cuda
         self.max_sequence_len = np.max(data.word.str.len())
 
         self.tokenizer = SequenceTokenizer()
@@ -158,10 +157,20 @@ class Accentor:
                                 hidden_dim=32,
                                 vocab_size=len(self.tokenizer.word2index) + 1,
                                 target_size=self.max_sequence_len)
-        if self.use_cuda:
-            self.model.cuda()
+        if use_cuda:
+            self.cuda()
+        else:
+            self.cpu()
         self.model.load_state_dict(torch.load(model_path))
         self.model.eval()
+
+    def cuda(self):
+        self._cuda = True
+        self.model.cuda()
+
+    def cpu(self):
+        self._cuda = False
+        self.model.cpu()
 
     def pad_sequence(self, lst):
         if isinstance(lst[0], list):
@@ -172,7 +181,7 @@ class Accentor:
     def predict(self, words: List[str], mode: str = 'stress'):
         tokens = self.pad_sequence(self.tokenizer.transform(words))
 
-        if self.use_cuda:
+        if self._cuda:
             sequences = torch.tensor(tokens, dtype=torch.long).cuda()
         else:
             sequences = torch.tensor(tokens, dtype=torch.long)

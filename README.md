@@ -30,7 +30,9 @@ from accentor import Accentor, replace_accents
 accentor = Accentor('./accentor.pt', './dict.txt')
 
 # Using GPU
-# accentor = Accentor('./accentor.pt', './dict.txt', use_cuda=True)
+# accentor.cuda()
+# Back to CPU
+# accentor.cpu()
 
 test_words1 = ["словотворення", "архаїчний", "програма", "а-ля-фуршет"]
 
