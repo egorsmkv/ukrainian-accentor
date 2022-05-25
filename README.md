@@ -10,13 +10,13 @@ notebook: https://github.com/dsakovych/g2p_uk/blob/master/notebooks/word_stress_
 ## Installation
 
 ```bash
-pip install torch pandas
+pip install -r requirements.txt
 ```
 
 ## Demo
 
 ```
-python accentor.py
+python inference.py
 
 With stress: ['словотво́рення', 'архаї́чний', 'програ́ма', 'а-ля-фурше́т']
 With pluses: ['словотв+орення', 'арха+їчний', 'прогр+ама', 'а-ля-фурш+ет']
@@ -25,12 +25,16 @@ With pluses: ['словотв+орення', 'арха+їчний', 'прогр+
 Or you can use the library like the following:
 
 ```python
-from accentor import Accentor, replace_accents
+import torch
 
-accentor = Accentor('./accentor.pt', './dict.txt')
+importer = torch.package.PackageImporter("accentor-lite.pt")
+accentor = importer.load_pickle("uk-accentor", "model")
+replace_accents = importer.load_pickle("uk-accentor", "replace_accents")
 
 # Using GPU
-# accentor = Accentor('./accentor.pt', './dict.txt', use_cuda=True)
+# accentor.cuda()
+# Back to CPU
+# accentor.cpu()
 
 test_words1 = ["словотворення", "архаїчний", "програма", "а-ля-фуршет"]
 
