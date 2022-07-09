@@ -1,4 +1,4 @@
-from accentor import Accentor, replace_accents
+from accentor import Accentor
 import torch
 
 
@@ -17,6 +17,5 @@ with torch.package.PackageExporter("accentor-lite.pt") as exporter:
 
     #save
     exporter.save_pickle("uk-accentor", "model", accentor)
-    exporter.save_pickle("uk-accentor", "replace_accents", replace_accents)
 
 print("ok")

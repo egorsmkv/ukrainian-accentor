@@ -190,11 +190,18 @@ class Accentor:
         indices = torch.argmax(preds, dim=1)
 
         if mode == 'stress':
-            return [word[:index + 1] + chr(769) + word[index + 1:] for word, index in zip(words, indices)]
+            stress = chr(769)
+            shift = 1
         elif mode == 'asterisk':
-            return [word[:index + 1] + "*" + word[index + 1:] for word, index in zip(words, indices)]
+            stress = "*"
+            shift = 1
+        elif mode == 'plus':
+            stress = "+"
+            shift = 0
         else:
             raise ValueError(f"Wrong `mode`={mode}")
+
+        return [word[:index + shift] + stress + word[index + shift:] for word, index in zip(words, indices)]
 
     @staticmethod
     def load_dict(path: str):
