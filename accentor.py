@@ -100,14 +100,14 @@ class LSTM_model(nn.Module):
 
         self.lstm = nn.LSTM(input_size=self.embeddings.embedding_dim,
                             hidden_size=hidden_dim,
-                            num_layers=2,
+                            num_layers=3,
                             batch_first=True,
                             bidirectional=True)
-        self.linear = nn.Linear(self.hidden_dim * 4, 32)
+        self.linear = nn.Linear(self.hidden_dim * 4, 64)
         self.batch_norm = nn.BatchNorm1d(self.hidden_dim * 4, affine=False)
         self.relu = nn.ReLU()
         self.dropout = nn.Dropout(0.2)
-        self.out = nn.Linear(32, target_size)
+        self.out = nn.Linear(64, target_size)
 
     def forward(self, x):
         h_embeddings = self.embeddings(x)
@@ -154,7 +154,7 @@ class Accentor:
         self.tokenizer.fit(data.word_list)
 
         self.model = LSTM_model(embedding_dim=64,
-                                hidden_dim=32,
+                                hidden_dim=64,
                                 vocab_size=len(self.tokenizer.word2index) + 1,
                                 target_size=self.max_sequence_len)
         if use_cuda:
