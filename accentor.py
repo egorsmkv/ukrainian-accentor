@@ -102,21 +102,24 @@ class LSTM_model(nn.Module):
                             hidden_size=hidden_dim,
                             num_layers=3,
                             batch_first=True,
-                            bidirectional=True)
-        self.linear = nn.Linear(self.hidden_dim * 4, 64)
-        self.batch_norm = nn.BatchNorm1d(self.hidden_dim * 4, affine=False)
+                            bidirectional=True,
+                            dropout = 0.05)
+        self.linear = nn.Linear(self.hidden_dim * 8 , 64)
+        self.batch_norm = nn.BatchNorm1d(self.hidden_dim * 8, affine=False)
         self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(0.2)
+        self.dropout = nn.Dropout(0.1)
         self.out = nn.Linear(64, target_size)
 
     def forward(self, x):
         h_embeddings = self.embeddings(x)
 
         h_lstm, _ = self.lstm(h_embeddings)
-        avg_pool = torch.mean(h_lstm, 1)
-        max_pool, _ = torch.max(h_lstm, 1)
+        d_1 = h_lstm[:,0,:]
+        d_2 = h_lstm[:,h_lstm.shape[1]//4,:]
+        d_3 = h_lstm[:,h_lstm.shape[1]*3//4,:]
+        d_4 = h_lstm[:,-1,:]
 
-        x = torch.cat((avg_pool, max_pool), 1)
+        x = torch.cat((d_1, d_2, d_3, d_4), 1)
         x = self.batch_norm(x)
         x = self.linear(x)
         x = self.relu(x)
