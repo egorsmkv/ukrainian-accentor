@@ -174,7 +174,8 @@ class Accentor:
 
     def pad_sequence(self, lst):
         if isinstance(lst[0], list):
-            return np.array([i + [0] * (self.max_sequence_len - len(i)) for i in lst])
+            return np.array([i[:self.max_sequence_len] + 
+                            [0] * (self.max_sequence_len - len(i)) for i in lst])
 
         raise ValueError('lst is incorrect')
 
