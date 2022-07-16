@@ -5,6 +5,8 @@ import torch.nn as nn
 import numpy as np
 import pandas as pd
 
+from word_tokenizer import tokenize, detokenize
+
 EXCLUDE_LIST = [
     '\t', '$', '%', '-', '\\', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g',
     'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
@@ -206,6 +208,17 @@ class Accentor:
             raise ValueError(f"Wrong `mode`={mode}")
 
         return [word[:index + shift] + stress + word[index + shift:] for word, index in zip(words, indices)]
+
+    def process(self, text: str, mode: str = 'stress'):
+        words = tokenize(text)
+        words_list, index_list = zip(*words)
+
+        stressed_list = self.predict(words_list, mode = mode)
+        stressed_words = zip(stressed_list, index_list)
+
+        stressed_text = detokenize(text, stressed_words)
+        
+        return stressed_text
 
     @staticmethod
     def load_dict(path: str):
