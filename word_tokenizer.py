@@ -17,7 +17,7 @@ WORD_TOKENIZATION_RULES = re.compile(r"""
 """, re.X | re.U)
 
 
-WORD_MATCH_RULES = re.compile("[а-яА-ЯіїІЇ'’`" + ACCENT + "]+")
+WORD_MATCH_RULES = re.compile("(?=[а-яА-ЯіїІЇ'’`" + ACCENT + "])(?=.*[аеєиіїоуюяАЕЄИІЇОУЮЯ].*)")
 
 
 
