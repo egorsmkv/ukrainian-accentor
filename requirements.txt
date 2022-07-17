@@ -1,2 +1,6 @@
+# run
 torch>=1.9
+six
+# dev
 pandas
+tqdm

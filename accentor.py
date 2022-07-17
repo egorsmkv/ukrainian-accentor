@@ -5,6 +5,8 @@ import torch.nn as nn
 import numpy as np
 import pandas as pd
 
+from word_tokenizer import tokenize, detokenize
+
 EXCLUDE_LIST = [
     '\t', '$', '%', '-', '\\', '`', 'a', 'b', 'c', 'd', 'e', 'f', 'g',
     'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
@@ -100,23 +102,26 @@ class LSTM_model(nn.Module):
 
         self.lstm = nn.LSTM(input_size=self.embeddings.embedding_dim,
                             hidden_size=hidden_dim,
-                            num_layers=2,
+                            num_layers=3,
                             batch_first=True,
-                            bidirectional=True)
-        self.linear = nn.Linear(self.hidden_dim * 4, 32)
-        self.batch_norm = nn.BatchNorm1d(self.hidden_dim * 4, affine=False)
+                            bidirectional=True,
+                            dropout = 0.05)
+        self.linear = nn.Linear(self.hidden_dim * 8 , 64)
+        self.batch_norm = nn.BatchNorm1d(self.hidden_dim * 8, affine=False)
         self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(0.2)
-        self.out = nn.Linear(32, target_size)
+        self.dropout = nn.Dropout(0.1)
+        self.out = nn.Linear(64, target_size)
 
     def forward(self, x):
         h_embeddings = self.embeddings(x)
 
         h_lstm, _ = self.lstm(h_embeddings)
-        avg_pool = torch.mean(h_lstm, 1)
-        max_pool, _ = torch.max(h_lstm, 1)
+        d_1 = h_lstm[:,0,:]
+        d_2 = h_lstm[:,h_lstm.shape[1]//4,:]
+        d_3 = h_lstm[:,h_lstm.shape[1]*3//4,:]
+        d_4 = h_lstm[:,-1,:]
 
-        x = torch.cat((avg_pool, max_pool), 1)
+        x = torch.cat((d_1, d_2, d_3, d_4), 1)
         x = self.batch_norm(x)
         x = self.linear(x)
         x = self.relu(x)
@@ -154,7 +159,7 @@ class Accentor:
         self.tokenizer.fit(data.word_list)
 
         self.model = LSTM_model(embedding_dim=64,
-                                hidden_dim=32,
+                                hidden_dim=64,
                                 vocab_size=len(self.tokenizer.word2index) + 1,
                                 target_size=self.max_sequence_len)
         if use_cuda:
@@ -174,7 +179,8 @@ class Accentor:
 
     def pad_sequence(self, lst):
         if isinstance(lst[0], list):
-            return np.array([i + [0] * (self.max_sequence_len - len(i)) for i in lst])
+            return np.array([i[:self.max_sequence_len] + 
+                            [0] * (self.max_sequence_len - len(i)) for i in lst])
 
         raise ValueError('lst is incorrect')
 
@@ -190,11 +196,29 @@ class Accentor:
         indices = torch.argmax(preds, dim=1)
 
         if mode == 'stress':
-            return [word[:index + 1] + chr(769) + word[index + 1:] for word, index in zip(words, indices)]
+            stress = chr(769)
+            shift = 1
         elif mode == 'asterisk':
-            return [word[:index + 1] + "*" + word[index + 1:] for word, index in zip(words, indices)]
+            stress = "*"
+            shift = 1
+        elif mode == 'plus':
+            stress = "+"
+            shift = 0
         else:
             raise ValueError(f"Wrong `mode`={mode}")
+
+        return [word[:index + shift] + stress + word[index + shift:] for word, index in zip(words, indices)]
+
+    def process(self, text: str, mode: str = 'stress'):
+        words = tokenize(text)
+        words_list, index_list = zip(*words)
+
+        stressed_list = self.predict(words_list, mode = mode)
+        stressed_words = zip(stressed_list, index_list)
+
+        stressed_text = detokenize(text, stressed_words)
+        
+        return stressed_text
 
     @staticmethod
     def load_dict(path: str):

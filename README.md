@@ -18,8 +18,8 @@ pip install -r requirements.txt
 ```
 python inference.py
 
-With stress: ['словотво́рення', 'архаї́чний', 'програ́ма', 'а-ля-фурше́т']
-With pluses: ['словотв+орення', 'арха+їчний', 'прогр+ама', 'а-ля-фурш+ет']
+With stress: Я́ співа́ю ве́селу пі́сню в Украї́ні
+With pluses: +Я спів+аю в+еселу п+існю в Укра+їні
 ```
 
 Or you can use the library like the following:
@@ -29,18 +29,20 @@ import torch
 
 importer = torch.package.PackageImporter("accentor-lite.pt")
 accentor = importer.load_pickle("uk-accentor", "model")
-replace_accents = importer.load_pickle("uk-accentor", "replace_accents")
 
 # Using GPU
 # accentor.cuda()
 # Back to CPU
 # accentor.cpu()
 
-test_words1 = ["словотворення", "архаїчний", "програма", "а-ля-фуршет"]
+text = "Я співаю веселу пісню в Україні"
 
-stressed_words = accentor.predict(test_words1, mode='stress')
-plused_words = [replace_accents(x) for x in stressed_words]
+stressed_words = accentor.process(text, mode='stress')
+plused_words = accentor.process(text, mode='plus')
 
 print('With stress:', stressed_words)
 print('With pluses:', plused_words)
 ```
+
+## Attribution
+Sentence support implemented by code from [tokenize-uk](https://github.com/lang-uk/tokenize-uk) by [lang-uk](https://github.com/lang-uk)
