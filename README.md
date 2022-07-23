@@ -9,7 +9,7 @@ The model was trained using [this notebook](https://github.com/egorsmkv/ukrainia
 ## Installation
 
 ```bash
-pip install -r requirements.txt
+pip install git+https://github.com/egorsmkv/ukrainian-accentor.git
 ```
 
 ## Demo
@@ -24,10 +24,7 @@ With pluses: +Я спів+аю в+еселу п+існю в Укра+їні
 Or you can use the library like the following:
 
 ```python
-import torch
-
-importer = torch.package.PackageImporter("accentor-lite.pt")
-accentor = importer.load_pickle("uk-accentor", "model")
+import ukrainian_accentor as accentor
 
 # Using GPU
 # accentor.cuda()
@@ -41,6 +38,14 @@ plused_words = accentor.process(text, mode='plus')
 
 print('With stress:', stressed_words)
 print('With pluses:', plused_words)
+```
+
+## Development
+
+If you want do train your own model clone this repo and run:
+
+```bash
+pip install -r requirements.dev.txt
 ```
 
 ## Attribution
