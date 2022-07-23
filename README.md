@@ -4,8 +4,7 @@
 
 This repository contains a PyTorch model to make accents in Ukrainian words.
 
-The model was trained using this
-notebook: https://github.com/dsakovych/g2p_uk/blob/master/notebooks/word_stress_pytorch.ipynb
+The model was trained using [this notebook](https://github.com/egorsmkv/ukrainian-accentor/blob/main/notebooks/word_stress_pytorch.ipynb) in `notebooks/` folder
 
 ## Installation
 
@@ -45,4 +44,6 @@ print('With pluses:', plused_words)
 ```
 
 ## Attribution
+Training script is a derivative of [word_stress_pytorch.ipynb](https://github.com/dsakovych/g2p_uk/blob/master/notebooks/word_stress_pytorch.ipynb) by [dsakovych](https://github.com/dsakovych)
+
 Sentence support implemented by code from [tokenize-uk](https://github.com/lang-uk/tokenize-uk) by [lang-uk](https://github.com/lang-uk)
