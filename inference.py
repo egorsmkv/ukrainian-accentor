@@ -1,12 +1,6 @@
-import torch
+import ukrainian_accentor as accentor
 
 
-
-# import
-importer = torch.package.PackageImporter("accentor-lite.pt")
-accentor = importer.load_pickle("uk-accentor", "model")
-
-# run
 text = "Я співаю веселу пісню в Україні"
 
 stressed_words = accentor.process(text, mode='stress')

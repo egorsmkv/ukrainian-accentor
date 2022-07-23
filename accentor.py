@@ -133,11 +133,10 @@ class LSTM_model(nn.Module):
 
 
 class Accentor:
-    dict: List[Tuple[str, str]]
     tokenizer: SequenceTokenizer
     max_sequence_len: int
     model: LSTM_model
-    use_cuda: bool
+    _cuda: bool
 
     def __init__(self, model_path: str, dict_path: str, use_cuda: bool = False):
         dictionary = self.load_dict(dict_path)
@@ -185,7 +184,8 @@ class Accentor:
         raise ValueError('lst is incorrect')
 
     def predict(self, words: List[str], mode: str = 'stress'):
-        tokens = self.pad_sequence(self.tokenizer.transform(words))
+        lower_words = [word.lower() for word in words]
+        tokens = self.pad_sequence(self.tokenizer.transform(lower_words))
 
         if self._cuda:
             sequences = torch.tensor(tokens, dtype=torch.long).cuda()
@@ -211,13 +211,17 @@ class Accentor:
 
     def process(self, text: str, mode: str = 'stress'):
         words = tokenize(text)
-        words_list, index_list = zip(*words)
-
-        stressed_list = self.predict(words_list, mode = mode)
-        stressed_words = zip(stressed_list, index_list)
-
-        stressed_text = detokenize(text, stressed_words)
         
+        if (len(words) == 0):
+            stressed_text = text
+        else:
+            words_list, index_list = zip(*words)
+
+            stressed_list = self.predict(words_list, mode = mode)
+            stressed_words = zip(stressed_list, index_list)
+
+            stressed_text = detokenize(text, stressed_words)
+
         return stressed_text
 
     @staticmethod

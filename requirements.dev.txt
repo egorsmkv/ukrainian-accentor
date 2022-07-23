@@ -1,5 +1,6 @@
 # run
 torch>=1.9
+numpy
 six
 # dev
 pandas

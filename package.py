@@ -6,7 +6,7 @@ import torch
 accentor = Accentor('./model/accentor.pt', './model/dict.txt')
 
 
-with torch.package.PackageExporter("accentor-lite.pt") as exporter:
+with torch.package.PackageExporter("ukrainian_accentor/accentor-lite.pt") as exporter:
     # intern
     exporter.intern("accentor.**")
     exporter.intern("word_tokenizer.**")
