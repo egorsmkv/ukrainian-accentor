@@ -133,11 +133,10 @@ class LSTM_model(nn.Module):
 
 
 class Accentor:
-    dict: List[Tuple[str, str]]
     tokenizer: SequenceTokenizer
     max_sequence_len: int
     model: LSTM_model
-    use_cuda: bool
+    _cuda: bool
 
     def __init__(self, model_path: str, dict_path: str, use_cuda: bool = False):
         dictionary = self.load_dict(dict_path)
