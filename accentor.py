@@ -211,13 +211,17 @@ class Accentor:
 
     def process(self, text: str, mode: str = 'stress'):
         words = tokenize(text)
-        words_list, index_list = zip(*words)
-
-        stressed_list = self.predict(words_list, mode = mode)
-        stressed_words = zip(stressed_list, index_list)
-
-        stressed_text = detokenize(text, stressed_words)
         
+        if (len(words) == 0):
+            stressed_text = text
+        else:
+            words_list, index_list = zip(*words)
+
+            stressed_list = self.predict(words_list, mode = mode)
+            stressed_words = zip(stressed_list, index_list)
+
+            stressed_text = detokenize(text, stressed_words)
+
         return stressed_text
 
     @staticmethod
