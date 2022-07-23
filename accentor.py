@@ -185,7 +185,8 @@ class Accentor:
         raise ValueError('lst is incorrect')
 
     def predict(self, words: List[str], mode: str = 'stress'):
-        tokens = self.pad_sequence(self.tokenizer.transform(words))
+        lower_words = [word.lower() for word in words]
+        tokens = self.pad_sequence(self.tokenizer.transform(lower_words))
 
         if self._cuda:
             sequences = torch.tensor(tokens, dtype=torch.long).cuda()
