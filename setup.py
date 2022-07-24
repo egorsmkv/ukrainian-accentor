@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='ukrainian-accentor',
-    version="0.1.0",
+    version="0.1.1",
     description='Adds word stress for texts in Ukrainian',
     url='https://github.com/egorsmkv/ukrainian-accentor',
     author='egorsmkv, NeonBohdan',
