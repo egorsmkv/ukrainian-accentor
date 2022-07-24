@@ -37,5 +37,5 @@ def detokenize(text: str, words: list) -> str:
         de_text += text[start_idx:span[0]]
         de_text += word
         start_idx = span[1]
-    de_text += text[start_idx:-1]
+    de_text += text[start_idx:]
     return de_text
