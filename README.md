@@ -6,6 +6,10 @@ This repository contains a PyTorch model to make accents in Ukrainian words.
 
 The model was trained using [this notebook](https://github.com/egorsmkv/ukrainian-accentor/blob/main/notebooks/word_stress_pytorch.ipynb) in `notebooks/` folder
 
+## Alternatives
+
+- [Ukrainian word stress](https://github.com/lang-uk/ukrainian-word-stress) by Oleksiy Syvokon
+
 ## Installation
 
 ```bash
